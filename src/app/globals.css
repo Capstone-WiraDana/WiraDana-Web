@@ -2,20 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  height: 100%;
+  color: #1c1418;
+  background: #f9f7f7;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  h1,
+  h2 {
+    @apply font-poppins;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  h3,
+  h4,
+  h5,
+  h5 {
+    @apply font-helvetica;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  h4 {
+    @apply text-h4;
+  }
+
+  h5 {
+    @apply text-h5;
+  }
+
+  h6 {
+    @apply text-h6;
+  }
+
+  .sub-1 {
+    @apply text-sub-1;
+    @apply font-helvetica;
+    @apply font-bold;
+  }
+
+  .sub-2 {
+    @apply text-sub-2;
+    @apply font-helvetica;
+    @apply font-bold;
+  }
+
+  .body-1 {
+    @apply text-body-1;
+    @apply font-helvetica;
+  }
+
+  .body-2 {
+    @apply text-body-2;
+    @apply font-helvetica;
+  }
+
+  .button {
+    @apply text-button;
+    @apply font-helvetica;
+    @apply font-bold;
+    @apply uppercase;
+  }
+
+  .caption {
+    @apply text-caption;
+    @apply font-helvetica;
+  }
+
+  .overline {
+    @apply text-overline;
+    @apply font-helvetica;
+    @apply font-bold;
+  }
+
+  .tag {
+    @apply text-tag;
+    @apply font-helvetica;
+  }
+
+  .label {
+    @apply text-label;
+    @apply font-helvetica;
+  }
 }
