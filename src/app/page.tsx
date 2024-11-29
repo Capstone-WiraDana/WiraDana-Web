@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main>
-      <h1 className='text-blackolive'>apakek</h1>
+      <h1 className='text-blackolive'>test</h1>
     </main>
   );
 }
