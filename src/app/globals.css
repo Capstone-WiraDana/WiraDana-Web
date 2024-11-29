@@ -96,4 +96,7 @@ body,
     @apply text-label;
     @apply font-helvetica;
   }
+  :root {
+    --radius: 0.5rem;
+  }
 }
