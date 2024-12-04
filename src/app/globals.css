@@ -8,6 +8,7 @@ body,
   height: 100%;
   color: #1c1418;
   background: #f9f7f7;
+  scroll-behavior: smooth;
 }
 
 @layer base {

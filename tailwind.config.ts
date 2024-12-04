@@ -16,6 +16,8 @@ export default {
         celadon: '#A4E6CC',
         mintcream: '#E9F9F2',
         blackolive: '#3C3D37',
+        seasalt: '#F9F7F7',
+        erie: '#181C14',
       },
       fontFamily: {
         poppins: ['var(--font-poppins)'],
@@ -42,6 +44,9 @@ export default {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        card: '7px 7px 20px rgba(0, 0, 0, 0.25)',
       },
     },
   },
