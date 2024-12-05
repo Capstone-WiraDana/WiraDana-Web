@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-const Header: React.FC = () => {
+const HeaderInv: React.FC = () => {
   return (
     <>
-      <div className='h-full w-full px-6 py-10' id='header'>
+      <div className='w-full px-6 py-10' id='header'>
         <div className='flex items-center justify-center'>
           <div className='w-1/2'>
             <p className='text-6xl font-bold text-emerald'>WiraDana</p>
@@ -15,9 +15,9 @@ const Header: React.FC = () => {
               Bersama WiraDana, bangun kemitraan strategis untuk mendukung
               pertumbuhan usaha dan raih kesuksesan berkelanjutan.
             </p>
-            <Link href={'/masuk'}>
+            <Link href={'/investor/umkm'}>
               <button className='mt-4 bg-emerald px-8 py-3 text-3xl font-bold text-mintcream hover:bg-[#4cd298]'>
-                Jelajahi WiraDana
+                Cari UMKM
               </button>
             </Link>
           </div>
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className='mt-5 flex items-center justify-center gap-16'>
+      <div className='flex items-center justify-center gap-16'>
         <div className='flex items-center justify-center rounded-lg bg-celadon px-8 py-5 shadow-card'>
           <div className='w-20'>
             <img src='/img/icons/umkm.png' alt='card1_img' />
@@ -67,4 +67,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default HeaderInv;

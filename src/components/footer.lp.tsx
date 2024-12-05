@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 const Footer: React.FC = () => {
@@ -33,17 +32,17 @@ const Footer: React.FC = () => {
             </a>
           </div>
           <div>
-            <Link href={'/daftar?role=investor'}>
+            <Link href={'/auth/daftar?role=investor'}>
               <p className='text-lg text-seasalt hover:text-[#d1cfcf]'>
                 Daftar Menjadi Investor
               </p>
             </Link>
-            <Link href={'/daftar?role=umkm'}>
+            <Link href={'/auth/daftar?role=umkm'}>
               <p className='text-lg text-seasalt hover:text-[#d1cfcf]'>
                 Daftar Menjadi Pemilik UMKM
               </p>
             </Link>
-            <Link href={'/masuk'}>
+            <Link href={'/auth/masuk'}>
               <p className='text-lg text-seasalt hover:text-[#d1cfcf]'>
                 Jelajahi WiraDana
               </p>

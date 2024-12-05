@@ -1,19 +1,22 @@
-import Navbar from '@/components/navbar.lp';
+import LayoutLp from '@/components/layouts/layout.lp';
 import Header from '@/components/header.lp';
 import Content from '@/components/content.lp';
 import About from '@/components/about.lp';
 import Footer from '@/components/footer.lp';
 
+export const metadata = {
+  title: 'WiraDana | Beranda',
+};
+
 export default function Home() {
   return (
     <main>
-      <div className='mb-20'>
-        <Navbar />
-      </div>
-      <Header />
-      <Content />
-      <About />
-      <Footer />
+      <LayoutLp>
+        <Header />
+        <Content />
+        <About />
+        <Footer />
+      </LayoutLp>
     </main>
   );
 }
