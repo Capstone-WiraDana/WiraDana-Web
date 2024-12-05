@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 const Navbar: React.FC = () => {
@@ -22,12 +21,12 @@ const Navbar: React.FC = () => {
         >
           Tentang Kami
         </a>
-        <Link href={'/daftar'} className='me-5'>
+        <Link href={'/auth/daftar'} className='me-5'>
           <p className='rounded-sm bg-mintcream px-7 py-2 text-xl font-bold text-emerald hover:bg-[#d0f3e4]'>
             Daftar
           </p>
         </Link>
-        <Link href={'/masuk'}>
+        <Link href={'/auth/masuk'}>
           <p className='rounded-sm border-2 border-mintcream bg-emerald px-7 py-2 text-xl font-bold text-mintcream hover:bg-[#4cd298]'>
             Masuk
           </p>
