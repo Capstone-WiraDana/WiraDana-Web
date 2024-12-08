@@ -14,7 +14,7 @@ const Berita = () => {
   };
 
   return (
-    <LayoutInv title='Berita'>
+    <LayoutInv title='Berita UMKM'>
       <div className='flex w-full justify-center gap-10 px-5 py-12'>
         <div className='flex w-[50%] flex-col gap-12'>
           <CardNews

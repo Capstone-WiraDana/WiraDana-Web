@@ -14,7 +14,7 @@ const NavbarInv: React.FC = () => {
 
   const urls = [
     { name: 'Beranda', path: '/investor' },
-    { name: 'Cari UMKM', path: '/investor/umkm' },
+    { name: 'Cari UMKM', path: '/investor/cari-umkm' },
     { name: 'Berita UMKM', path: '/investor/berita' },
   ];
 

@@ -13,11 +13,15 @@ export default {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         emerald: '#26C385',
+        emeraldhover: "#4cd298",
         celadon: '#A4E6CC',
         mintcream: '#E9F9F2',
         blackolive: '#3C3D37',
         seasalt: '#F9F7F7',
         erie: '#181C14',
+        sunshine: '#FFD569',
+        bluesky: "#0D92F4",
+        blueskyhover: "#31a2f5"
       },
       fontFamily: {
         poppins: ['var(--font-poppins)'],
