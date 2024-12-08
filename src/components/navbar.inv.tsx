@@ -51,13 +51,19 @@ const NavbarInv: React.FC = () => {
                 alt='img_user'
               />
               <DropdownMenuContent>
-                <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
+                <DropdownMenuLabel>John Doe</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href={''}>
                   <DropdownMenuItem className='cursor-pointer font-semibold'>
                     Profil
                   </DropdownMenuItem>
                 </Link>
+                <Link href={''}>
+                  <DropdownMenuItem className='cursor-pointer font-semibold'>
+                    Portofolio
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem className='cursor-pointer font-semibold text-red-500 hover:!text-red-500'>
                   Keluar
                 </DropdownMenuItem>
