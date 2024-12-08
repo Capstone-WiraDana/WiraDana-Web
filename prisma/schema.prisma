@@ -1,0 +1,182 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Roles {
+  investor
+  umkm
+}
+
+enum Types {
+  vc
+  angel
+}
+
+enum BScale {
+  mikro
+  kecil
+  menengah
+}
+
+enum BType {
+  kuliner_dan_makanan
+  fashion_dan_tekstil
+  agribisnis
+  kerajinan_tangan
+  teknologi_digital
+  kesehatan_dan_kecantikan
+  pendidikan_dan_pelatihan
+  otomotif_dan_transportasi
+  perdagangan_umum
+  pariwisata
+}
+
+enum Status {
+  pending
+  paid
+}
+
+enum WStatus {
+  pending
+  completed
+}
+
+model User {
+  id             BigInt    @id @default(autoincrement())
+  email          String    @unique
+  password       String
+  role           Roles
+  bank_name      String    @default("-")
+  account_number String    @default("-")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  investor       Investor? @relation
+  umkm           Umkm?     @relation
+
+  @@map("users")
+}
+
+model Investor {
+  user_id                 BigInt                  @id
+  user                    User                    @relation(fields: [user_id], references: [id])
+  photo_url               String                  @default("default.jpg")
+  username                String
+  description             String?
+  location                String
+  type                    Types
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  likesStory              LikesStory[]
+  investment_contributors InvestmentContributor[]
+
+  @@map("investor")
+}
+
+model Umkm {
+  user_id          BigInt        @id
+  user             User          @relation(fields: [user_id], references: [id])
+  logo_url         String        @default("default.jpg")
+  umkm_name        String
+  owner_name       String
+  business_scale   BScale
+  business_type    BType
+  employees_number Int
+  founded_year     Int
+  location         String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  reports          Report[]
+  stories          Story[]
+  fundraisings     Fundraising[]
+
+  @@map("umkm")
+}
+
+model Report {
+  id                   BigInt   @id @default(autoincrement())
+  umkm_id              BigInt
+  financial_report_url String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  umkm                 Umkm     @relation(fields: [umkm_id], references: [user_id])
+
+  @@map("report")
+}
+
+model Story {
+  id           BigInt       @id @default(autoincrement())
+  umkm_id      BigInt
+  photo_url    String       @default("default.jpg")
+  caption      String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  umkm         Umkm         @relation(fields: [umkm_id], references: [user_id])
+  likesStories LikesStory[]
+
+  @@map("story")
+}
+
+model LikesStory {
+  id          BigInt   @id @default(autoincrement())
+  story_id    BigInt
+  investor_id BigInt
+  story       Story    @relation(fields: [story_id], references: [id])
+  investor    Investor @relation(fields: [investor_id], references: [user_id])
+
+  @@map("likes_story")
+}
+
+model Fundraising {
+  id                       BigInt                     @id @default(autoincrement())
+  umkm_id                  BigInt
+  photo_url                String
+  description              String
+  required_funds           String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  umkm                     Umkm                       @relation(fields: [umkm_id], references: [user_id])
+  investmentContributors   InvestmentContributor[]
+  HistoryFundingWithdrawal HistoryFundingWithdrawal[]
+
+  @@map("fundraising")
+}
+
+model InvestmentContributor {
+  id                   BigInt      @id @default(autoincrement())
+  fund_id              BigInt
+  investor_id          BigInt
+  amount               Decimal
+  payment_status       Status      @default(pending)
+  latest_amount_return Decimal
+  latest_amount_status WStatus     @default(pending)
+  latest_return_date   DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  fund                 Fundraising @relation(fields: [fund_id], references: [id])
+  investor             Investor    @relation(fields: [investor_id], references: [user_id])
+
+  @@map("investment_contributors")
+}
+
+model HistoryFundingWithdrawal {
+  id        BigInt      @id @default(autoincrement())
+  fund_id   BigInt
+  amount    Decimal
+  status    WStatus     @default(pending)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  fund      Fundraising @relation(fields: [fund_id], references: [id])
+
+  @@map("history_funding_withdrawals")
+}
