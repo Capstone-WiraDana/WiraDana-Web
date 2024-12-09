@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import LayoutInv from '@/components/layouts/layout.investor';
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import CardUmkm from '@/components/ui/card-umkm';
 import { useState } from 'react';
 
 const CariUmkm = () => {
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('');
 
   return (
     <>
@@ -21,10 +21,10 @@ const CariUmkm = () => {
               className='h-10 w-[60%] rounded-md border border-blackolive ps-3'
               type='text'
               placeholder='Cari Data UMKM...'
-              onChange={(e) => setSearch(e.target.value) }
+              onChange={(e) => setSearch(e.target.value)}
             />
             <DropdownMenu>
-              <DropdownMenuTrigger className='bg-sunshine flex h-10 items-center justify-center gap-2 rounded-md px-4'>
+              <DropdownMenuTrigger className='flex h-10 items-center justify-center gap-2 rounded-md bg-sunshine px-4'>
                 <img
                   className='w-7 cursor-pointer'
                   src='/img/icons/location.png'
@@ -39,7 +39,7 @@ const CariUmkm = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             <input
-              className='hover:bg-emeraldhover cursor-pointer rounded-md bg-emerald px-16 text-lg font-bold text-seasalt'
+              className='cursor-pointer rounded-md bg-emerald px-16 text-lg font-bold text-seasalt hover:bg-emeraldhover'
               type='submit'
               value={'Cari Data'}
             />
@@ -198,17 +198,45 @@ const CariUmkm = () => {
                 </label>
               </div>
               <input
-                className='bg-bluesky hover:bg-blueskyhover mt-3 h-10 w-full cursor-pointer rounded text-xl font-bold text-white'
+                className='mt-3 h-10 w-full cursor-pointer rounded bg-bluesky text-xl font-bold text-white hover:bg-blueskyhover'
                 type='submit'
                 value={'Filter'}
               />
             </form>
             <div className='w-[60%]'>
-              <div className='w-full flex flex-wrap gap-5'>
-                <CardUmkm id={1} umkm_name='Amanah Karya' image_url='/img/test/content-2.png' umkm_type='Fashion & Tekstil' umkm_place='Jakarta' umkm_year={2022} />
-                <CardUmkm id={1} umkm_name='Amanah Karya' image_url='/img/test/content-2.png' umkm_type='Fashion & Tekstil' umkm_place='Jakarta' umkm_year={2002} />
-                <CardUmkm id={1} umkm_name='Amanah Karya' image_url='/img/test/content-2.png' umkm_type='Fashion & Tekstil' umkm_place='Jakarta' umkm_year={2022} />
-                <CardUmkm id={1} umkm_name='Amanah Karya' image_url='/img/test/content-2.png' umkm_type='Fashion & Tekstil' umkm_place='Jakarta' umkm_year={2002} />
+              <div className='flex w-full flex-wrap gap-5'>
+                <CardUmkm
+                  id={1}
+                  umkm_name='Amanah Karya'
+                  image_url='/img/test/content-2.png'
+                  umkm_type='Fashion & Tekstil'
+                  umkm_place='Jakarta'
+                  umkm_year={2022}
+                />
+                <CardUmkm
+                  id={1}
+                  umkm_name='Amanah Karya'
+                  image_url='/img/test/content-2.png'
+                  umkm_type='Fashion & Tekstil'
+                  umkm_place='Jakarta'
+                  umkm_year={2002}
+                />
+                <CardUmkm
+                  id={1}
+                  umkm_name='Amanah Karya'
+                  image_url='/img/test/content-2.png'
+                  umkm_type='Fashion & Tekstil'
+                  umkm_place='Jakarta'
+                  umkm_year={2022}
+                />
+                <CardUmkm
+                  id={1}
+                  umkm_name='Amanah Karya'
+                  image_url='/img/test/content-2.png'
+                  umkm_type='Fashion & Tekstil'
+                  umkm_place='Jakarta'
+                  umkm_year={2002}
+                />
               </div>
             </div>
           </div>

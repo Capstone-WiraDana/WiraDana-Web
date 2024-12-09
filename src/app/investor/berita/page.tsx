@@ -50,7 +50,10 @@ const Berita = () => {
               Top UMKM paling Aktif
             </p>
             <div className='mt-3 flex w-full flex-col items-center gap-5'>
-              <Link className='w-full' href={`/investor/profil-umkm/${'umkm_id'}`}>
+              <Link
+                className='w-full'
+                href={`/investor/profil-umkm/${'umkm_id'}`}
+              >
                 <div className='w-full rounded-xl bg-mintcream p-5'>
                   <div className='flex items-center'>
                     <img
