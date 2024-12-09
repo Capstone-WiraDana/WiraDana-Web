@@ -8,7 +8,7 @@ CREATE TYPE "Types" AS ENUM ('vc', 'angel');
 CREATE TYPE "BScale" AS ENUM ('mikro', 'kecil', 'menengah');
 
 -- CreateEnum
-CREATE TYPE "BType" AS ENUM ('kuliner_dan_makanan', 'fashion_dan_tekstil', 'agribisnis', 'kerajinan_tangan', 'teknologi_digital', 'kesehatan_dan_kecantikan', 'pendidikan_dan_pelatihan', 'otomotif_dan_transportasi', 'perdagangan_umum', 'pariwisata');
+CREATE TYPE "BType" AS ENUM ('KM', 'FT', 'A', 'KT', 'TD', 'KK', 'PP', 'OT', 'PU', 'P');
 
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('pending', 'paid');
@@ -18,7 +18,7 @@ CREATE TYPE "WStatus" AS ENUM ('pending', 'completed');
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "Roles" NOT NULL,
@@ -32,8 +32,8 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "investor" (
-    "user_id" BIGINT NOT NULL,
-    "photo_url" TEXT NOT NULL DEFAULT 'default.jpg',
+    "user_id" INTEGER NOT NULL,
+    "photo_url" TEXT NOT NULL DEFAULT 'https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png',
     "username" TEXT NOT NULL,
     "description" TEXT,
     "location" TEXT NOT NULL,
@@ -46,10 +46,11 @@ CREATE TABLE "investor" (
 
 -- CreateTable
 CREATE TABLE "umkm" (
-    "user_id" BIGINT NOT NULL,
-    "logo_url" TEXT NOT NULL DEFAULT 'default.jpg',
+    "user_id" INTEGER NOT NULL,
+    "logo_url" TEXT NOT NULL DEFAULT 'https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png',
     "umkm_name" TEXT NOT NULL,
     "owner_name" TEXT NOT NULL,
+    "description" TEXT,
     "business_scale" "BScale" NOT NULL,
     "business_type" "BType" NOT NULL,
     "employees_number" INTEGER NOT NULL,
@@ -63,8 +64,8 @@ CREATE TABLE "umkm" (
 
 -- CreateTable
 CREATE TABLE "report" (
-    "id" BIGSERIAL NOT NULL,
-    "umkm_id" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "umkm_id" INTEGER NOT NULL,
     "financial_report_url" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -74,9 +75,9 @@ CREATE TABLE "report" (
 
 -- CreateTable
 CREATE TABLE "story" (
-    "id" BIGSERIAL NOT NULL,
-    "umkm_id" BIGINT NOT NULL,
-    "photo_url" TEXT NOT NULL DEFAULT 'default.jpg',
+    "id" SERIAL NOT NULL,
+    "umkm_id" INTEGER NOT NULL,
+    "photo_url" TEXT NOT NULL DEFAULT 'https://storage.googleapis.com/wiradana-bucket/uploads/stories/default.png',
     "caption" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -86,18 +87,18 @@ CREATE TABLE "story" (
 
 -- CreateTable
 CREATE TABLE "likes_story" (
-    "id" BIGSERIAL NOT NULL,
-    "story_id" BIGINT NOT NULL,
-    "investor_id" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "story_id" INTEGER NOT NULL,
+    "investor_id" INTEGER NOT NULL,
 
     CONSTRAINT "likes_story_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "fundraising" (
-    "id" BIGSERIAL NOT NULL,
-    "umkm_id" BIGINT NOT NULL,
-    "photo_url" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "umkm_id" INTEGER NOT NULL,
+    "photo_url" TEXT NOT NULL DEFAULT 'https://storage.googleapis.com/wiradana-bucket/uploads/fundraising/photo/default.png',
     "description" TEXT NOT NULL,
     "required_funds" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -108,9 +109,9 @@ CREATE TABLE "fundraising" (
 
 -- CreateTable
 CREATE TABLE "investment_contributors" (
-    "id" BIGSERIAL NOT NULL,
-    "fund_id" BIGINT NOT NULL,
-    "investor_id" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "fund_id" INTEGER NOT NULL,
+    "investor_id" INTEGER NOT NULL,
     "amount" DECIMAL(65,30) NOT NULL,
     "payment_status" "Status" NOT NULL DEFAULT 'pending',
     "latest_amount_return" DECIMAL(65,30) NOT NULL,
@@ -124,8 +125,8 @@ CREATE TABLE "investment_contributors" (
 
 -- CreateTable
 CREATE TABLE "history_funding_withdrawals" (
-    "id" BIGSERIAL NOT NULL,
-    "fund_id" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "fund_id" INTEGER NOT NULL,
     "amount" DECIMAL(65,30) NOT NULL,
     "status" "WStatus" NOT NULL DEFAULT 'pending',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

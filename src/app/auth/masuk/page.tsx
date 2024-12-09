@@ -4,15 +4,18 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import validateToken from '@/hooks/tokenValidation';
 
 const Masuk = () => {
   const router = useRouter();
+  const { toast } = useToast()
 
   useEffect(() => {
     document.title = 'WiraDana | Masuk';
   });
 
-  const onSubmit = (event: React.FormEvent) => {
+  const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
@@ -20,7 +23,45 @@ const Masuk = () => {
     const password = (form.elements.namedItem('password') as HTMLInputElement)
       .value;
 
-    router.push('/investor');
+    const fetchData = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if(!fetchData.ok) {
+      const response = await fetchData.json()
+      const { message } = response
+      return toast({
+        variant: "destructive",
+        description: message,
+      })
+    }
+
+    const response = await fetchData.json()
+    const { token, message } = response
+    if(token) {
+      localStorage.setItem("token", token)
+      toast({
+        description: message,
+      })
+    }
+
+    const getToken = await validateToken()
+    if(getToken) {
+      const { role } = getToken
+      if(role == "investor") {
+        setTimeout(() => {
+          router.push('/investor');
+        }, 1500)
+      } else {
+        setTimeout(() => {
+          router.push('/umkm');
+        }, 1500)
+      }
+    }
   };
 
   return (

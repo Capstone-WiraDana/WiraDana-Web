@@ -8,15 +8,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 const NavbarInv: React.FC = () => {
   const currentPath = usePathname();
+  const router = useRouter();
 
   const urls = [
     { name: 'Beranda', path: '/investor' },
     { name: 'Cari UMKM', path: '/investor/cari-umkm' },
     { name: 'Berita UMKM', path: '/investor/berita' },
   ];
+
+  const logoutHandler = async () => {
+    window.localStorage.removeItem('token');
+    router.push('/');
+  };
 
   return (
     <nav className='fixed top-0 flex w-full scroll-smooth bg-emerald px-10 py-5'>
@@ -64,7 +71,10 @@ const NavbarInv: React.FC = () => {
                   </DropdownMenuItem>
                 </Link>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer font-semibold text-red-500 hover:!text-red-500'>
+                <DropdownMenuItem
+                  className='cursor-pointer font-semibold text-red-500 hover:!text-red-500'
+                  onClick={logoutHandler}
+                >
                   Keluar
                 </DropdownMenuItem>
               </DropdownMenuContent>

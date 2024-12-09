@@ -30,16 +30,16 @@ enum BScale {
 }
 
 enum BType {
-  kuliner_dan_makanan
-  fashion_dan_tekstil
-  agribisnis
-  kerajinan_tangan
-  teknologi_digital
-  kesehatan_dan_kecantikan
-  pendidikan_dan_pelatihan
-  otomotif_dan_transportasi
-  perdagangan_umum
-  pariwisata
+  KM
+  FT
+  A
+  KT
+  TD
+  KK
+  PP
+  OT
+  PU
+  P
 }
 
 enum Status {
@@ -53,7 +53,7 @@ enum WStatus {
 }
 
 model User {
-  id             BigInt    @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   email          String    @unique
   password       String
   role           Roles
@@ -68,9 +68,9 @@ model User {
 }
 
 model Investor {
-  user_id                 BigInt                  @id
+  user_id                 Int                     @id
   user                    User                    @relation(fields: [user_id], references: [id])
-  photo_url               String                  @default("default.jpg")
+  photo_url               String                  @default("https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png")
   username                String
   description             String?
   location                String
@@ -84,11 +84,12 @@ model Investor {
 }
 
 model Umkm {
-  user_id          BigInt        @id
+  user_id          Int           @id
   user             User          @relation(fields: [user_id], references: [id])
-  logo_url         String        @default("default.jpg")
+  logo_url         String        @default("https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png")
   umkm_name        String
   owner_name       String
+  description      String?
   business_scale   BScale
   business_type    BType
   employees_number Int
@@ -104,8 +105,8 @@ model Umkm {
 }
 
 model Report {
-  id                   BigInt   @id @default(autoincrement())
-  umkm_id              BigInt
+  id                   Int      @id @default(autoincrement())
+  umkm_id              Int
   financial_report_url String
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
@@ -115,9 +116,9 @@ model Report {
 }
 
 model Story {
-  id           BigInt       @id @default(autoincrement())
-  umkm_id      BigInt
-  photo_url    String       @default("default.jpg")
+  id           Int          @id @default(autoincrement())
+  umkm_id      Int
+  photo_url    String       @default("https://storage.googleapis.com/wiradana-bucket/uploads/stories/default.png")
   caption      String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
@@ -128,9 +129,9 @@ model Story {
 }
 
 model LikesStory {
-  id          BigInt   @id @default(autoincrement())
-  story_id    BigInt
-  investor_id BigInt
+  id          Int      @id @default(autoincrement())
+  story_id    Int
+  investor_id Int
   story       Story    @relation(fields: [story_id], references: [id])
   investor    Investor @relation(fields: [investor_id], references: [user_id])
 
@@ -138,9 +139,9 @@ model LikesStory {
 }
 
 model Fundraising {
-  id                       BigInt                     @id @default(autoincrement())
-  umkm_id                  BigInt
-  photo_url                String
+  id                       Int                        @id @default(autoincrement())
+  umkm_id                  Int
+  photo_url                String                     @default("https://storage.googleapis.com/wiradana-bucket/uploads/fundraising/photo/default.png")
   description              String
   required_funds           String
   createdAt                DateTime                   @default(now())
@@ -153,9 +154,9 @@ model Fundraising {
 }
 
 model InvestmentContributor {
-  id                   BigInt      @id @default(autoincrement())
-  fund_id              BigInt
-  investor_id          BigInt
+  id                   Int         @id @default(autoincrement())
+  fund_id              Int
+  investor_id          Int
   amount               Decimal
   payment_status       Status      @default(pending)
   latest_amount_return Decimal
@@ -170,8 +171,8 @@ model InvestmentContributor {
 }
 
 model HistoryFundingWithdrawal {
-  id        BigInt      @id @default(autoincrement())
-  fund_id   BigInt
+  id        Int         @id @default(autoincrement())
+  fund_id   Int
   amount    Decimal
   status    WStatus     @default(pending)
   createdAt DateTime    @default(now())

@@ -65,7 +65,7 @@ const CardUmkm = ({
             </label>
             <div className='mt-2 w-full'>
               <Link className='float-end' href={`/investor/fundraising/${id}`}>
-                <p className='hover:bg-emeraldhover rounded bg-emerald px-10 py-1 font-bold text-seasalt'>
+                <p className='rounded bg-emerald px-10 py-1 font-bold text-seasalt hover:bg-emeraldhover'>
                   Detail
                 </p>
               </Link>
