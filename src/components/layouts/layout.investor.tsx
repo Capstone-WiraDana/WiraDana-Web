@@ -2,31 +2,15 @@
 import Head from 'next/head';
 import { useEffect } from 'react';
 import NavbarInv from '../navbar.inv';
-import validateToken from '@/hooks/tokenValidation';
-import { useRouter } from 'next/navigation';
+import AuthRedirect from '../auth.validation';
 
 const LayoutInv = ({
   children,
   title,
 }: Readonly<{ children: React.ReactNode; title: string }>) => {
-  const router = useRouter()
 
   useEffect(() => {
     document.title = `WiraDana | ${title}`;
-
-    const validateUser = async () => {
-      const getToken = await validateToken()
-      if(getToken) {
-        const { role } = getToken
-        if(role !== "investor") {
-          router.push("/umkm")
-        }
-      } else {
-        router.push("/")
-      }
-    }
-
-    validateUser()
   });
 
   return (
@@ -34,6 +18,7 @@ const LayoutInv = ({
       <Head>
         <title>{document.title}</title>
       </Head>
+      <AuthRedirect />
       <div className='mb-20'>
         <NavbarInv />
       </div>

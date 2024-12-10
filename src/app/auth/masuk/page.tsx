@@ -6,10 +6,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import validateToken from '@/hooks/tokenValidation';
+import AuthRedirect from '@/components/auth.validation';
 
 const Masuk = () => {
   const router = useRouter();
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   useEffect(() => {
     document.title = 'WiraDana | Masuk';
@@ -31,35 +32,37 @@ const Masuk = () => {
       body: JSON.stringify({ email, password }),
     });
 
-    if(!fetchData.ok) {
-      const response = await fetchData.json()
-      const { message } = response
+    if (!fetchData.ok) {
+      const response = await fetchData.json();
+      const { message } = response;
       return toast({
-        variant: "destructive",
+        variant: 'destructive',
         description: message,
-      })
+      });
     }
 
-    const response = await fetchData.json()
-    const { token, message } = response
-    if(token) {
-      localStorage.setItem("token", token)
+    const response = await fetchData.json();
+    const { token, message } = response;
+    if (token) {
+      localStorage.setItem('token', token);
       toast({
         description: message,
-      })
+      });
     }
 
-    const getToken = await validateToken()
-    if(getToken) {
-      const { role } = getToken
-      if(role == "investor") {
+    const getToken = await validateToken();
+    if (getToken) {
+      const { role } = getToken;
+      if (role == 'investor') {
         setTimeout(() => {
           router.push('/investor');
-        }, 1500)
-      } else {
+        }, 1500);
+      } else if (role == 'umkm') {
         setTimeout(() => {
           router.push('/umkm');
-        }, 1500)
+        }, 1500);
+      } else {
+        router.refresh();
       }
     }
   };
@@ -69,6 +72,7 @@ const Masuk = () => {
       <Head>
         <title>{document.title}</title>
       </Head>
+      <AuthRedirect />
       <div className='flex h-screen w-full items-center justify-center bg-emerald px-52'>
         <div className='w-full rounded-[10px] bg-seasalt px-10 py-5'>
           <p className='text-center text-5xl font-bold text-blackolive'>
