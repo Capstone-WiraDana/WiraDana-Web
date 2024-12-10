@@ -15,7 +15,7 @@ const HeaderInv: React.FC = () => {
               Bersama WiraDana, bangun kemitraan strategis untuk mendukung
               pertumbuhan usaha dan raih kesuksesan berkelanjutan.
             </p>
-            <Link href={'/investor/umkm'}>
+            <Link href={'/investor/cari-umkm'}>
               <button className='mt-4 bg-emerald px-8 py-3 text-3xl font-bold text-mintcream hover:bg-[#4cd298]'>
                 Cari UMKM
               </button>

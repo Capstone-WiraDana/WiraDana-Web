@@ -11,7 +11,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import AuthRedirect from '@/components/auth.validation';
 
 const Daftar = () => {
   const router = useRouter();
@@ -200,7 +199,6 @@ const Daftar = () => {
       <Head>
         <title>{document.title}</title>
       </Head>
-      <AuthRedirect />
       <div className='flex min-h-screen w-full items-center justify-center bg-emerald'>
         <form className='w-full px-40' onSubmit={handleSubmit}>
           <div
