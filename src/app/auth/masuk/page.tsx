@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import validateToken from '@/hooks/tokenValidation';
-import AuthRedirect from '@/components/auth.validation';
 
 const Masuk = () => {
   const router = useRouter();
@@ -72,7 +71,6 @@ const Masuk = () => {
       <Head>
         <title>{document.title}</title>
       </Head>
-      <AuthRedirect />
       <div className='flex h-screen w-full items-center justify-center bg-emerald px-52'>
         <div className='w-full rounded-[10px] bg-seasalt px-10 py-5'>
           <p className='text-center text-5xl font-bold text-blackolive'>
