@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import AuthRedirect from '@/components/auth.validation';
 
 const Daftar = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Daftar = () => {
   const handleSubmitEmail = async (event: any) => {
     event.preventDefault();
 
-    const checkEmail = await fetch('/api//check-email', {
+    const checkEmail = await fetch('/api/check-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,18 +61,148 @@ const Daftar = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    try {
+      const umkm_name = (
+        form.elements.namedItem('umkm_name') as HTMLInputElement
+      ).value;
+      const owner_name = (
+        form.elements.namedItem('owner_name') as HTMLInputElement
+      ).value;
+      const business_scale = (
+        form.elements.namedItem('business_scale') as HTMLInputElement
+      ).value;
+      const business_type = (
+        form.elements.namedItem('business_type') as HTMLInputElement
+      ).value;
+      const employees_number = Number(
+        (form.elements.namedItem('employees_number') as HTMLInputElement).value,
+      );
+      const founded_year = Number(
+        (form.elements.namedItem('founded_year') as HTMLInputElement).value,
+      );
+      const type = (
+        form.elements.namedItem('investor_type') as HTMLInputElement
+      ).value;
+      const username = (form.elements.namedItem('username') as HTMLInputElement)
+        .value;
+      const description = (
+        form.elements.namedItem(
+          `${role === 'umkm' ? 'description_umkm' : 'description_inv'}`,
+        ) as HTMLInputElement
+      ).value;
+      const location = (
+        form.elements.namedItem(
+          `${role === 'umkm' ? 'location_umkm' : 'location_inv'}`,
+        ) as HTMLInputElement
+      ).value;
+      const bank_name = (
+        form.elements.namedItem(
+          `${role === 'umkm' ? 'bank_name_umkm' : 'bank_name_inv'}`,
+        ) as HTMLInputElement
+      ).value;
+      const account_number = (
+        form.elements.namedItem(
+          `${role === 'umkm' ? 'account_number_umkm' : 'account_number_inv'}`,
+        ) as HTMLInputElement
+      ).value;
 
-    // logic hit API here...
-  }
+      if (role == 'umkm') {
+        const register = await fetch('/api/auth/register/umkm', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            role,
+            email,
+            password,
+            umkm_name,
+            owner_name,
+            description,
+            business_scale,
+            business_type,
+            employees_number,
+            founded_year,
+            location,
+            bank_name,
+            account_number,
+          }),
+        });
+
+        const response = await register.json();
+        const { status, message } = response;
+        if (!register.ok) {
+          return toast({
+            variant: 'destructive',
+            title: status,
+            description: message,
+          });
+        }
+
+        toast({
+          title: status,
+          description: message,
+        });
+
+        setTimeout(() => {
+          router.push('/auth/masuk');
+        }, 1500);
+      } else {
+        const register = await fetch('/api/auth/register/investor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            role,
+            email,
+            password,
+            username,
+            description,
+            location,
+            type,
+            bank_name,
+            account_number,
+          }),
+        });
+
+        const response = await register.json();
+        const { status, message } = response;
+        if (!register.ok) {
+          return toast({
+            variant: 'destructive',
+            title: status,
+            description: message,
+          });
+        }
+
+        toast({
+          title: status,
+          description: message,
+        });
+
+        setTimeout(() => {
+          router.push('/auth/masuk');
+        }, 1500);
+      }
+    } catch (err: any) {
+      return toast({
+        variant: 'destructive',
+        description: err.message,
+      });
+    }
+  };
 
   return (
     <>
       <Head>
         <title>{document.title}</title>
       </Head>
+      <AuthRedirect />
       <div className='flex min-h-screen w-full items-center justify-center bg-emerald'>
-        <form className='w-full px-40' action='' method='POST'>
+        <form className='w-full px-40' onSubmit={handleSubmit}>
           <div
             className={`w-full bg-seasalt px-10 py-5 ${page === 'daftar' ? '' : 'hidden'} rounded-[10px]`}
           >
@@ -546,7 +677,7 @@ const Daftar = () => {
                   className='w-1/2 cursor-pointer rounded-[5px] bg-red-500 py-3 text-2xl font-bold text-seasalt hover:bg-red-400'
                   onClick={(e) => {
                     e.preventDefault();
-                    setIsChecked(false)
+                    setIsChecked(false);
                     setPage(role == 'umkm' ? 'daftar-umkm' : 'daftar-investor');
                   }}
                 >
