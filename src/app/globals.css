@@ -8,6 +8,7 @@ body,
   height: 100%;
   color: #1c1418;
   background: #f9f7f7;
+  scroll-behavior: smooth;
 }
 
 @layer base {
@@ -95,5 +96,8 @@ body,
   .label {
     @apply text-label;
     @apply font-helvetica;
+  }
+  :root {
+    --radius: 0.5rem;
   }
 }

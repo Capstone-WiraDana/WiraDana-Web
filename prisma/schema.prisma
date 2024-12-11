@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Roles {
+  investor
+  umkm
+}
+
+enum Types {
+  vc
+  angel
+}
+
+enum BScale {
+  mikro
+  kecil
+  menengah
+}
+
+enum BType {
+  KM
+  FT
+  A
+  KT
+  TD
+  KK
+  PP
+  OT
+  PU
+  P
+}
+
+enum Status {
+  pending
+  paid
+}
+
+enum WStatus {
+  pending
+  completed
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  email          String    @unique
+  password       String
+  role           Roles
+  bank_name      String    @default("-")
+  account_number String    @default("-")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  investor       Investor? @relation
+  umkm           Umkm?     @relation
+
+  @@map("users")
+}
+
+model Investor {
+  user_id                 Int                     @id
+  user                    User                    @relation(fields: [user_id], references: [id])
+  photo_url               String                  @default("https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png")
+  username                String
+  description             String?
+  location                String
+  type                    Types
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  likesStory              LikesStory[]
+  investment_contributors InvestmentContributor[]
+
+  @@map("investor")
+}
+
+model Umkm {
+  user_id          Int           @id
+  user             User          @relation(fields: [user_id], references: [id])
+  logo_url         String        @default("https://storage.googleapis.com/wiradana-bucket/uploads/users/default.png")
+  umkm_name        String
+  owner_name       String
+  description      String?
+  business_scale   BScale
+  business_type    BType
+  employees_number Int
+  founded_year     Int
+  location         String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  reports          Report[]
+  stories          Story[]
+  fundraisings     Fundraising[]
+
+  @@map("umkm")
+}
+
+model Report {
+  id                   Int      @id @default(autoincrement())
+  umkm_id              Int
+  financial_report_url String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  umkm                 Umkm     @relation(fields: [umkm_id], references: [user_id])
+
+  @@map("report")
+}
+
+model Story {
+  id           Int          @id @default(autoincrement())
+  umkm_id      Int
+  photo_url    String       @default("https://storage.googleapis.com/wiradana-bucket/uploads/stories/default.png")
+  caption      String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  umkm         Umkm         @relation(fields: [umkm_id], references: [user_id])
+  likesStories LikesStory[]
+
+  @@map("story")
+}
+
+model LikesStory {
+  id          Int      @id @default(autoincrement())
+  story_id    Int
+  investor_id Int
+  story       Story    @relation(fields: [story_id], references: [id])
+  investor    Investor @relation(fields: [investor_id], references: [user_id])
+
+  @@map("likes_story")
+}
+
+model Fundraising {
+  id                       Int                        @id @default(autoincrement())
+  umkm_id                  Int
+  photo_url                String                     @default("https://storage.googleapis.com/wiradana-bucket/uploads/fundraising/photo/default.png")
+  description              String
+  required_funds           String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  umkm                     Umkm                       @relation(fields: [umkm_id], references: [user_id])
+  investmentContributors   InvestmentContributor[]
+  HistoryFundingWithdrawal HistoryFundingWithdrawal[]
+
+  @@map("fundraising")
+}
+
+model InvestmentContributor {
+  id                   Int         @id @default(autoincrement())
+  fund_id              Int
+  investor_id          Int
+  amount               Decimal
+  payment_status       Status      @default(pending)
+  latest_amount_return Decimal
+  latest_amount_status WStatus     @default(pending)
+  latest_return_date   DateTime?
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  fund                 Fundraising @relation(fields: [fund_id], references: [id])
+  investor             Investor    @relation(fields: [investor_id], references: [user_id])
+
+  @@map("investment_contributors")
+}
+
+model HistoryFundingWithdrawal {
+  id        Int         @id @default(autoincrement())
+  fund_id   Int
+  amount    Decimal
+  status    WStatus     @default(pending)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  fund      Fundraising @relation(fields: [fund_id], references: [id])
+
+  @@map("history_funding_withdrawals")
+}

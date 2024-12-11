@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Poppins } from 'next/font/google';
 import './globals.css';
+import { Toaster } from '@/components/ui/toaster';
 
 const helveticaNeue = localFont({
   src: '../../public/fonts/HelveticaNeueRoman.otf',
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${helveticaNeue.variable} antialiased`}
       >
+        <Toaster />
         {children}
       </body>
     </html>
