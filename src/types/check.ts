@@ -1,3 +1,3 @@
 export type CheckEmail = {
-    email: string
-}
+  email: string;
+};

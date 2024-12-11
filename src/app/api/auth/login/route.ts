@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { Login } from '@/types/auth';
-import jsonwebtoken from "jsonwebtoken"
+import jsonwebtoken from 'jsonwebtoken';
 import 'dotenv/config';
 
-const jwtSecret: string = String(process.env.JWT_SECRET)
+const jwtSecret: string = String(process.env.JWT_SECRET);
 
 export const POST = async (req: NextRequest) => {
   const method = req.method;
@@ -59,13 +59,16 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
-    const token = jsonwebtoken.sign({ id: user.id, role: user.role }, jwtSecret)
+    const token = jsonwebtoken.sign(
+      { id: user.id, role: user.role },
+      jwtSecret,
+    );
 
     return NextResponse.json(
       {
         status: 'berhasil',
         message: 'Login berhasil.',
-        token: token
+        token: token,
       },
       { status: 200 },
     );

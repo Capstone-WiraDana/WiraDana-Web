@@ -6,7 +6,7 @@ const Header: React.FC = () => {
       <div className='h-full w-full px-6 py-10' id='header'>
         <div className='flex items-center justify-center'>
           <div className='w-1/2'>
-            <p className='text-6xl font-bold text-emerald'>WiraDana</p>
+            <p className='font-bold text-emerald'>WiraDana</p>
             <p className='text-4xl font-semibold text-erie'>
               Hubungkan UMKM Anda dengan Investor Potensial – Bangun Kesuksesan
               Bersama di WiraDana!
@@ -16,7 +16,7 @@ const Header: React.FC = () => {
               pertumbuhan usaha dan raih kesuksesan berkelanjutan.
             </p>
             <Link href={'/masuk'}>
-              <button className='mt-4 bg-emerald px-8 py-3 text-3xl font-bold text-mintcream hover:bg-[#4cd298]'>
+              <button className='mt-4 rounded-md bg-emerald px-8 py-3 text-h6 font-bold text-mintcream hover:bg-[#4cd298]'>
                 Jelajahi WiraDana
               </button>
             </Link>

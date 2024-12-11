@@ -65,8 +65,8 @@ export const POST = async (req: NextRequest) => {
         email: email,
         password: hashPass,
         role: 'investor',
-        bank_name: bank_name || "-",
-        account_number: account_number || "-",
+        bank_name: bank_name || '-',
+        account_number: account_number || '-',
       },
     });
 
