@@ -14,6 +14,7 @@ export default async function validateToken(): Promise<TokenData> {
         return null;
       }
     } catch (error) {
+      console.log(error);
       return null;
     }
   } else {

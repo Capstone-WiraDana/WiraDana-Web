@@ -22,6 +22,19 @@ export default {
         sunshine: '#FFD569',
         bluesky: '#0D92F4',
         blueskyhover: '#31a2f5',
+<<<<<<< HEAD
+=======
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
+>>>>>>> e50e5e5b40025e073bd15ddc131e74d85f69fc14
       },
       fontFamily: {
         poppins: ['var(--font-poppins)'],

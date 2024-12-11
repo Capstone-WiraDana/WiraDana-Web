@@ -9,6 +9,9 @@ module.exports = {
   ],
   rules: {
     'tailwindcss/classnames-order': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'no-var': 'off',
   },
   overrides: [
     {

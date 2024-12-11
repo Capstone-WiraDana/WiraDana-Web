@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 const CardNews = ({
   umkm_id,
-  story_id,
   logo,
   name,
   image_content,
@@ -65,7 +64,7 @@ const CardNews = ({
             className='w-10 cursor-pointer'
             src={liked ? '/img/icons/liked.png' : '/img/icons/like.png'}
             alt='img_like'
-            onClick={(e) => {
+            onClick={() => {
               void handleLike();
             }}
           />
