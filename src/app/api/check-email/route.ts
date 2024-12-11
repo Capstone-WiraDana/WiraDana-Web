@@ -25,11 +25,14 @@ export const POST = async (req: NextRequest) => {
       message = 'Email sudah terdaftar';
     }
 
-    return NextResponse.json({
-        status : "berhasil",
-        message : message,
-        isRegistered : response
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        status: 'berhasil',
+        message: message,
+        isRegistered: response,
+      },
+      { status: 200 },
+    );
   } catch (err) {
     return NextResponse.json(
       {

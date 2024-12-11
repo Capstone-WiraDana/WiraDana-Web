@@ -1,4 +1,3 @@
-
 import LayoutLp from '@/components/layouts/layout.lp';
 import Header from '@/components/header.lp';
 import Content from '@/components/content.lp';

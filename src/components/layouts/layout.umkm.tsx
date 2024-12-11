@@ -1,8 +1,9 @@
 'use client';
-import Head from 'next/head';
 import { useEffect } from 'react';
 import validateToken from '@/hooks/tokenValidation';
 import { useRouter } from 'next/navigation';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
 
 const LayoutUmkm = ({
   title,
@@ -16,7 +17,7 @@ const LayoutUmkm = ({
     const checkToken = async () => {
       const tokenData = await validateToken();
       if (tokenData) {
-        const { id, role } = tokenData;
+        const { role } = tokenData;
         if (role != 'umkm' && role == 'investor') {
           router.push('/investor');
         } else if (role != 'investor' && role != 'umkm') {
@@ -31,12 +32,15 @@ const LayoutUmkm = ({
   });
   return (
     <>
-      <Head>
-        <title>{document.title}</title>
-      </Head>
-      {children}
+      <SidebarProvider>
+        <AppSidebar />
+        <main>
+          <SidebarTrigger />
+          {children}
+        </main>
+      </SidebarProvider>
     </>
   );
 };
 
-export default LayoutUmkm
+export default LayoutUmkm;
