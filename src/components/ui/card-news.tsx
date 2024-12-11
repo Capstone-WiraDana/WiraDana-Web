@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 const CardNews = ({
   umkm_id,
+  story_id,
   logo,
   name,
   image_content,

@@ -22,9 +22,7 @@ const Daftar = () => {
   const [role, setRole] = useState('investor');
   const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    document.title = 'WiraDana | Daftar';
-  });
+  useEffect(() => {});
 
   const handleSubmitEmail = async (event: any) => {
     event.preventDefault();
@@ -197,7 +195,7 @@ const Daftar = () => {
   return (
     <>
       <Head>
-        <title>{document.title}</title>
+        <title>WiraDana | Daftar</title>
       </Head>
       <div className='flex min-h-screen w-full items-center justify-center bg-emerald'>
         <form className='w-full px-40' onSubmit={handleSubmit}>
