@@ -24,6 +24,7 @@ const Berita = () => {
             name='Amanah Karya'
             image_content='/img/test/content.png'
             likes={124}
+            comments={123}
             caption='Hari ini kami restock koleksi baju terbaru yang cocok untuk berbagai kesempatan, mulai dari jalan santai hingga acara spesial. Tidak hanya itu, kami juga live di TikTok untuk berbagi keseruan dan memberikan inspirasi gaya terbaik. '
             isLiked={true}
           />
