@@ -3,7 +3,6 @@ import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { RegisterUmkm } from '@/types/auth';
 import 'dotenv/config';
-import { BType } from '@prisma/client';
 
 export const POST = async (req: NextRequest) => {
   const method = req.method;
@@ -88,7 +87,17 @@ export const POST = async (req: NextRequest) => {
         owner_name,
         description: description || null,
         business_scale: (business_scale as 'mikro') || 'kecil' || 'menengah',
-        business_type: business_type as BType,
+        business_type:
+          (business_type as 'KM') ||
+          'FT' ||
+          'A' ||
+          'KT' ||
+          'TD' ||
+          'KK' ||
+          'PP' ||
+          'OT' ||
+          'PU' ||
+          'P',
         employees_number,
         founded_year,
         location,

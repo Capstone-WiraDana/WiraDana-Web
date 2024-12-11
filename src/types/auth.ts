@@ -6,13 +6,8 @@ export type Login = {
 export type RegisterInv = {
   email: string;
   password: string;
-<<<<<<< HEAD
-  bank_name: any;
-  account_number: any;
-=======
   bank_name: string | null;
   account_number: string | null;
->>>>>>> e50e5e5b40025e073bd15ddc131e74d85f69fc14
   username: string;
   description: string;
   location: string;

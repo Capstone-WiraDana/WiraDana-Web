@@ -6,7 +6,7 @@ const Header: React.FC = () => {
       <div className='h-full w-full px-6 py-10' id='header'>
         <div className='flex items-center justify-center'>
           <div className='w-1/2'>
-            <p className='font-bold text-emerald'>WiraDana</p>
+            <p className='text-6xl font-bold text-emerald'>WiraDana</p>
             <p className='text-4xl font-semibold text-erie'>
               Hubungkan UMKM Anda dengan Investor Potensial – Bangun Kesuksesan
               Bersama di WiraDana!
