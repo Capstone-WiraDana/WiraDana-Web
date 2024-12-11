@@ -39,4 +39,4 @@ const LayoutUmkm = ({
   );
 };
 
-export default LayoutUmkm
+export default LayoutUmkm;

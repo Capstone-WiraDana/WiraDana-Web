@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "src/api/auth/login/route.js",
     "src/api/login.js",
-    "src/app/api/route.js"
-, "src/app/api/auth/login/route.ts"  ],
+    "src/app/api/route.js",
+    "src/app/api/auth/login/route.ts"
+  ],
   "exclude": ["node_modules"]
 }

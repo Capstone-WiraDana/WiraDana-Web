@@ -51,7 +51,7 @@ export const POST = async (req: NextRequest) => {
       business_type,
       employees_number,
       founded_year,
-      location
+      location,
     } = body;
 
     const checkEmail = await prisma.user.findUnique({
@@ -74,8 +74,8 @@ export const POST = async (req: NextRequest) => {
         email: email,
         password: hashPass,
         role: 'umkm',
-        bank_name: bank_name || "-",
-        account_number: account_number || "-",
+        bank_name: bank_name || '-',
+        account_number: account_number || '-',
       },
     });
 
@@ -87,11 +87,11 @@ export const POST = async (req: NextRequest) => {
         umkm_name,
         owner_name,
         description: description || null,
-        business_scale : business_scale as "mikro" || "kecil" || "menengah",
-        business_type : business_type as BType,
+        business_scale: (business_scale as 'mikro') || 'kecil' || 'menengah',
+        business_type: business_type as BType,
         employees_number,
         founded_year,
-        location
+        location,
       },
     });
 

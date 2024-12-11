@@ -78,6 +78,7 @@ model Investor {
   createdAt               DateTime                @default(now())
   updatedAt               DateTime                @updatedAt
   likesStory              LikesStory[]
+  storyComments           StoryComments[]
   investment_contributors InvestmentContributor[]
 
   @@map("investor")
@@ -107,7 +108,7 @@ model Umkm {
 model Report {
   id                   Int      @id @default(autoincrement())
   umkm_id              Int
-  financial_report_url String
+  financial_report_url String   @default("https://storage.googleapis.com/wiradana-bucket/uploads/fundraising/report_file/default.pdf")
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
   umkm                 Umkm     @relation(fields: [umkm_id], references: [user_id])
@@ -116,16 +117,31 @@ model Report {
 }
 
 model Story {
-  id           Int          @id @default(autoincrement())
+  id           Int             @id @default(autoincrement())
   umkm_id      Int
-  photo_url    String       @default("https://storage.googleapis.com/wiradana-bucket/uploads/stories/default.png")
+  photo_url    String          @default("https://storage.googleapis.com/wiradana-bucket/uploads/stories/default.png")
   caption      String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  umkm         Umkm         @relation(fields: [umkm_id], references: [user_id])
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  umkm         Umkm            @relation(fields: [umkm_id], references: [user_id])
   likesStories LikesStory[]
+  storyComment StoryComments[]
 
   @@map("story")
+}
+
+model StoryComments {
+  id          Int      @id @default(autoincrement())
+  story_id    Int
+  investor_id Int
+  comment     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  story    Story    @relation(fields: [story_id], references: [id])
+  investor Investor @relation(fields: [investor_id], references: [user_id])
+
+  @@map("story_comments")
 }
 
 model LikesStory {
@@ -159,7 +175,7 @@ model InvestmentContributor {
   investor_id          Int
   amount               Decimal
   payment_status       Status      @default(pending)
-  latest_amount_return Decimal
+  latest_amount_return Decimal?
   latest_amount_status WStatus     @default(pending)
   latest_return_date   DateTime?
   createdAt            DateTime    @default(now())

@@ -10,6 +10,7 @@ const CardNews = ({
   name,
   image_content,
   likes,
+  comments,
   caption,
   isLiked,
 }: Readonly<{
@@ -19,6 +20,7 @@ const CardNews = ({
   name: string;
   image_content: string;
   likes: number;
+  comments: number;
   caption: string;
   isLiked: boolean;
 }>) => {
@@ -68,6 +70,13 @@ const CardNews = ({
             }}
           />
           <p className='text-lg font-semibold'>{countLike}</p>
+          <Link href={`/investor/berita/detail?story_id=${story_id}`}>
+            <img
+              className='w-10 cursor-pointer'
+              src='/img/icons/comment.png'
+              alt='img_comment'
+            />
+          </Link>
         </div>
         <div className='mt-1 px-5'>
           <p

@@ -10,7 +10,8 @@
     "lint": "next lint",
     "prepare": "husky",
     "migrate": "npx prisma migrate dev --name init",
-    "db-format": "npx prisma format"
+    "db-format": "npx prisma format",
+    "db-seed": "npx prisma db seed"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.14.0",
@@ -33,6 +34,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -49,6 +52,10 @@
     "prettier": "^3.4.1",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
