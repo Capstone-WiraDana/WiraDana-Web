@@ -7,10 +7,25 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import CardUmkm from '@/components/ui/card-umkm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CariUmkm = () => {
-  const [search, setSearch] = useState('');
+  const [fund, setFund] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchDataFund = async () => {
+      const fetchData = await fetch('/api/fund-data', {
+        method: 'GET',
+      });
+
+      if (fetchData.ok) {
+        const data = await fetchData.json();
+        setFund(data.data);
+      }
+    };
+
+    fetchDataFund();
+  }, []);
 
   return (
     <>
@@ -21,7 +36,6 @@ const CariUmkm = () => {
               className='h-10 w-[60%] rounded-md border border-blackolive ps-3'
               type='text'
               placeholder='Cari Data UMKM...'
-              onChange={(e) => setSearch(e.target.value)}
             />
             <DropdownMenu>
               <DropdownMenuTrigger className='flex h-10 items-center justify-center gap-2 rounded-md bg-sunshine px-4'>
@@ -205,38 +219,21 @@ const CariUmkm = () => {
             </form>
             <div className='w-[60%]'>
               <div className='flex w-full flex-wrap gap-5'>
-                <CardUmkm
-                  id={1}
-                  umkm_name='Amanah Karya'
-                  image_url='/img/test/content-2.png'
-                  umkm_type='Fashion & Tekstil'
-                  umkm_place='Jakarta'
-                  umkm_year={2022}
-                />
-                <CardUmkm
-                  id={1}
-                  umkm_name='Amanah Karya'
-                  image_url='/img/test/content-2.png'
-                  umkm_type='Fashion & Tekstil'
-                  umkm_place='Jakarta'
-                  umkm_year={2002}
-                />
-                <CardUmkm
-                  id={1}
-                  umkm_name='Amanah Karya'
-                  image_url='/img/test/content-2.png'
-                  umkm_type='Fashion & Tekstil'
-                  umkm_place='Jakarta'
-                  umkm_year={2022}
-                />
-                <CardUmkm
-                  id={1}
-                  umkm_name='Amanah Karya'
-                  image_url='/img/test/content-2.png'
-                  umkm_type='Fashion & Tekstil'
-                  umkm_place='Jakarta'
-                  umkm_year={2002}
-                />
+                {fund.length > 0 ? (
+                  fund.map((data, index) => (
+                    <CardUmkm
+                      key={index}
+                      id={data.fundraising_id}
+                      umkm_name={data.umkm_name}
+                      image_url={data.photo_url}
+                      umkm_type={data.business_type}
+                      umkm_place={data.location}
+                      umkm_year={data.founded_year}
+                    />
+                  ))
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>

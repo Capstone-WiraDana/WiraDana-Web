@@ -1,39 +1,70 @@
 'use client';
 import LayoutInv from '@/components/layouts/layout.investor';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import validateToken from '@/hooks/tokenValidation';
+import { toast } from '@/hooks/use-toast';
 
 const Detail = () => {
   const router = useRouter();
+  const pathName = usePathname();
   const searchParams = useSearchParams();
   const id = searchParams.get('story_id');
 
-  const [comment, setComment] = useState('');
+  const [userId, setUserId] = useState<number>();
+  const [comment, setComment] = useState<string>('');
   const [dataComment, setDataComment] = useState<any[]>([]);
   const [story, setStory] = useState<any>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchContent = await fetch(`/api/news/details?id=${id}`, {
-        method: 'GET',
-      });
+  const fetchData = async () => {
+    const fetchContent = await fetch(`/api/news/details?id=${id}`, {
+      method: 'GET',
+    });
 
-      if (fetchContent) {
-        const dataContent = await fetchContent.json();
-        const data = dataContent.data;
-        setStory(data.story[0]);
-        setDataComment(data.comment);
+    if (fetchContent) {
+      const dataContent = await fetchContent.json();
+      const data = dataContent.data;
+      setStory(data.story[0]);
+      setDataComment(data.comment);
+    }
+  };
+
+  useEffect(() => {
+    const fetchId = async () => {
+      const token = await validateToken();
+      if (token) {
+        const { id } = token;
+        setUserId(id);
       }
     };
 
+    fetchId();
     fetchData();
   }, []);
 
-  console.log(story);
+  const handleAddComment = async () => {
+    if (userId && id && comment) {
+      const addComment = await fetch('/api/news/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: userId, story_id: id, comment: comment }),
+      });
+      if (addComment.ok) {
+        toast({
+          title: 'Berhasil',
+          description: 'Data Komentar Berhasil ditambahkan',
+        });
 
-  const handleAddComment = async () => {};
+        await fetchData();
+        return setComment('');
+      }
+    }
+  };
+
   return (
     <LayoutInv title='Detail Berita'>
       <div className='w-full px-10 py-12'>
@@ -89,9 +120,11 @@ const Detail = () => {
                   type='text'
                   placeholder='Masukkan Komentar Anda...'
                   onChange={(e) => setComment(e.target.value)}
+                  value={comment}
                 />
                 <button
                   className='w-[30%] rounded bg-emerald text-lg font-bold text-seasalt hover:bg-emeraldhover'
+                  type='submit'
                   onClick={handleAddComment}
                 >
                   Tambah Komentar
@@ -112,7 +145,7 @@ const Detail = () => {
                       <p className='text-lg font-semibold text-erie'>
                         {data.username}
                       </p>
-                      <button className='justify-self-end rounded bg-emerald px-8 py-1 font-semibold text-seasalt'>
+                      <button className='ml-auto mr-5 rounded bg-emerald px-8 py-1 font-semibold text-seasalt'>
                         Status
                       </button>
                     </div>

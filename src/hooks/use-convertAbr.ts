@@ -1,13 +1,13 @@
 export default function convertAbbreviation(input: string): string {
   const abbreviationMap: { [key: string]: string } = {
-    KM: 'Kuliner dan Makanan',
-    FT: 'Fashion dan Tekstil',
+    KM: 'Kuliner & Makanan',
+    FT: 'Fashion & Tekstil',
     A: 'Agribisnis',
     KT: 'Kerajinan Tangan',
     TD: 'Teknologi Digital',
-    KK: 'Kesehatan dan Kecantikan',
-    PP: 'Pendidikan dan Pelatihan',
-    OT: 'Otomotif dan Transportasi',
+    KK: 'Kesehatan & Kecantikan',
+    PP: 'Pendidikan & Pelatihan',
+    OT: 'Otomotif & Transportasi',
     PU: 'Perdagangan Umum',
     P: 'Pariwisata',
   };
