@@ -59,7 +59,7 @@ const CariUmkm = () => {
             />
           </div>
           <div className='mt-8 flex w-full justify-center gap-5 px-2'>
-            <form className='w-[40%] rounded border border-blackolive bg-white p-5'>
+            <form className='h-fit w-[40%] rounded border border-blackolive bg-white p-5'>
               <p className='text-xl font-medium text-erie'>Data UMKM</p>
               <div className='my-2 border-[1px] border-t border-black'></div>
               <div className='flex w-full flex-wrap font-medium'>

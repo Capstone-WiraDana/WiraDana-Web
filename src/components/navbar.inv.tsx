@@ -57,8 +57,6 @@ const NavbarInv: React.FC<NavbarInvProps> = ({ id }) => {
     }
   }, [idUs]);
 
-  console.log(user);
-
   const logoutHandler = async () => {
     window.localStorage.removeItem('token');
     router.push('/');

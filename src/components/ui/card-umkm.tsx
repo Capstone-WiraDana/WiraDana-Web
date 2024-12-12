@@ -46,7 +46,7 @@ const CardUmkm = ({
                 src='/img/icons/category.png'
                 alt='img_icons'
               />
-              <p className='ms-2 text-sm font-medium'>
+              <p className='ms-2 max-w-full truncate text-sm font-medium'>
                 {convertAbbreviation(umkm_type)}
               </p>
             </label>
