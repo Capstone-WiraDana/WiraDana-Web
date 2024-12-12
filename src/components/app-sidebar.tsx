@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 const sidebar = [
   {
@@ -37,6 +38,11 @@ const sidebar = [
 ];
 
 export function AppSidebar() {
+  const router = useRouter();
+  const logoutHandler = async () => {
+    window.localStorage.removeItem('token');
+    router.push('/');
+  };
   return (
     <Sidebar>
       <SidebarHeader className='px-4 py-3 text-h6'>WiraDana</SidebarHeader>
@@ -73,10 +79,10 @@ export function AppSidebar() {
                 className='w-[--radix-popper-anchor-width]'
               >
                 <DropdownMenuItem>
-                  <span>Account</span>
+                  <span>Akun</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem onClick={logoutHandler}>
+                  <span>Keluar</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

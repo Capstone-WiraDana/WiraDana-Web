@@ -47,7 +47,7 @@ const Fundraising = () => {
       <div className='w-full px-4 py-6'>
         <div className='h-full w-full rounded-md bg-white px-8 pb-12 pt-6'>
           <div className='flex items-center'>
-            <Link href={'/investor'}>
+            <Link href={'/investor/cari-umkm'}>
               <ArrowLeft size={24} />
             </Link>
             <p className='ml-4 font-poppins text-xl'>Title</p>
