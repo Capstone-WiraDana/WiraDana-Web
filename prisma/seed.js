@@ -273,20 +273,20 @@ seedAll()
   .catch((error) => console.error('Error during seeding:', error));
 
 (async () => {
-  //   for (let i = 0; i <= 5; i++) {
-  //     await seedInv();
-  //     await seedUmkm();
-  //   }
-  //   for (let i = 0; i <= 10; i++) {
-  //     await seedStoryUMKM();
-  //   }
-  //   for (let i = 0; i <= 1000; i++) {
-  //     await seedLikeStory();
-  //   }
-  //   for(let i = 0; i <= 50; i++) {
-  //     await seedCommentStory()
-  //   }
-  // for (let i = 0; i <= 10; i++) {
-  //     await seedFund()
-  // }
+  for (let i = 0; i <= 5; i++) {
+    await seedInv();
+    await seedUmkm();
+  }
+  for (let i = 0; i <= 10; i++) {
+    await seedStoryUMKM();
+  }
+  for (let i = 0; i <= 1000; i++) {
+    await seedLikeStory();
+  }
+  for (let i = 0; i <= 50; i++) {
+    await seedCommentStory();
+  }
+  for (let i = 0; i <= 10; i++) {
+    await seedFund();
+  }
 })();

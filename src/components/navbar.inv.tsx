@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -9,16 +10,54 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const NavbarInv: React.FC = () => {
+interface NavbarInvProps {
+  id: number;
+}
+
+interface User {
+  username: string;
+  photo_url: string;
+  user_id: number;
+}
+
+const NavbarInv: React.FC<NavbarInvProps> = ({ id }) => {
   const currentPath = usePathname();
   const router = useRouter();
+
+  const [user, setUser] = useState<User | null>(null);
+  const [idUs, setId] = useState<number | undefined>(undefined);
 
   const urls = [
     { name: 'Beranda', path: '/investor' },
     { name: 'Cari UMKM', path: '/investor/cari-umkm' },
     { name: 'Berita UMKM', path: '/investor/berita' },
   ];
+
+  useEffect(() => {
+    if (id) {
+      setId(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (idUs !== undefined) {
+      const getDataUser = async () => {
+        const getData = await fetch(`/api/nav-data?id=${idUs}`, {
+          method: 'GET',
+        });
+        if (getData.ok) {
+          const data = await getData.json();
+          setUser(data.data);
+        }
+      };
+
+      getDataUser();
+    }
+  }, [idUs]);
+
+  console.log(user);
 
   const logoutHandler = async () => {
     window.localStorage.removeItem('token');
@@ -52,20 +91,32 @@ const NavbarInv: React.FC = () => {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <img
-                className='h-12 w-12 cursor-pointer rounded-[360px] border-2 border-seasalt object-cover'
-                src='https://img.freepik.com/premium-photo/smiling-young-asian-man-showing-copy-space-palm-holding-another-hand-waist-isolated_1006674-617.jpg'
-                alt='img_user'
-              />
+              {user != null ? (
+                <img
+                  className='h-12 w-12 cursor-pointer rounded-[360px] border-2 border-seasalt object-cover'
+                  src={user.photo_url}
+                  alt='img_user'
+                />
+              ) : (
+                <></>
+              )}
               <DropdownMenuContent>
-                <DropdownMenuLabel>John Doe</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {user != null ? (
+                    <>{user.username}</>
+                  ) : (
+                    <>
+                      <p className='from-neutral-400 font-light'>loading...</p>
+                    </>
+                  )}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={''}>
+                <Link href={`/investor/profil/${user?.user_id}`}>
                   <DropdownMenuItem className='cursor-pointer font-semibold'>
                     Profil
                   </DropdownMenuItem>
                 </Link>
-                <Link href={''}>
+                <Link href={'/investor/portofolio'}>
                   <DropdownMenuItem className='cursor-pointer font-semibold'>
                     Portofolio
                   </DropdownMenuItem>
