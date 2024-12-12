@@ -1,15 +1,15 @@
 'use client';
 import LayoutInv from '@/components/layouts/layout.investor';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import validateToken from '@/hooks/tokenValidation';
 import { toast } from '@/hooks/use-toast';
+import { Suspense } from 'react';
 
 const Detail = () => {
   const router = useRouter();
-  const pathName = usePathname();
   const searchParams = useSearchParams();
   const id = searchParams.get('story_id');
 
@@ -42,7 +42,7 @@ const Detail = () => {
 
     fetchId();
     fetchData();
-  }, []);
+  }, [id]);
 
   const handleAddComment = async () => {
     if (userId && id && comment) {
@@ -187,4 +187,10 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default function DetailPage() {
+  return (
+    <Suspense fallback={<Skeleton className='h-full w-full' />}>
+      <Detail />
+    </Suspense>
+  );
+}

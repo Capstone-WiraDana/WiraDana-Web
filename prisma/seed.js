@@ -174,6 +174,57 @@ const seedFund = async () => {
   console.log('Fundraising UMKM successfully created...');
 };
 
+const seedInvestmentContributors = async () => {
+  try {
+    const fundIds = await prisma.fundraising.findMany({
+      select: { id: true },
+    });
+
+    const investorIds = await prisma.investor.findMany({
+      select: { user_id: true },
+    });
+
+    if (fundIds.length > 0 && investorIds.length > 0) {
+      for (let i = 0; i < 100; i++) {
+        const randomFundId =
+          fundIds[Math.floor(Math.random() * fundIds.length)].id;
+        const randomInvestorId =
+          investorIds[Math.floor(Math.random() * investorIds.length)].user_id;
+        const amount = faker.finance.amount({
+          min: 100000,
+          max: 5000000,
+          dec: 0,
+        });
+        const latest_amount_return = faker.finance.amount({
+          min: 0,
+          max: amount,
+          dec: 0,
+        });
+        const latest_return_date = faker.date.past();
+
+        await prisma.investmentContributor.create({
+          data: {
+            fund_id: randomFundId,
+            investor_id: randomInvestorId,
+            amount,
+            payment_status: 'paid',
+            latest_amount_return,
+            latest_amount_status: 'pending',
+            latest_return_date,
+          },
+        });
+      }
+
+      console.log('Investment Contributors successfully created...');
+    } else {
+      console.log('No Fundraising or Investor IDs found.');
+    }
+  } catch (error) {
+    console.error('Error seeding Investment Contributors:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
 // Fundraising Seeds
 const fundraisingSeeds = [
   {
