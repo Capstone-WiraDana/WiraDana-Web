@@ -5,10 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 const keyFile = path.resolve(String(process.env.GCP_PATH_SA));
 
-export const storage = new Storage({
-  keyFilename: keyFile,
-  projectId: String(process.env.PROJECT_ID),
-});
+export const storage = new Storage();
+//   {
+//   keyFilename: keyFile,
+//   projectId: String(process.env.PROJECT_ID),
+// }
 
 const bucketName = process.env.GCP_BUCKET_NAME || 'wiradana-bucket';
 const bucket = storage.bucket(bucketName!);
