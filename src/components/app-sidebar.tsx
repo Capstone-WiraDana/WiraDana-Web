@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
-
+import { useUMKM } from '@/hooks/use-profile-umkm';
 const sidebar = [
   {
     url: '/umkm',
@@ -38,6 +38,8 @@ const sidebar = [
 ];
 
 export function AppSidebar() {
+  const { umkm, error, isLoading } = useUMKM();
+  console.log(umkm);
   const router = useRouter();
   const logoutHandler = async () => {
     window.localStorage.removeItem('token');
@@ -70,7 +72,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> Username
+                  <User2 /> {umkm?.umkm_name}
                   <ChevronUp className='ml-auto' />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

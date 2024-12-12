@@ -174,6 +174,104 @@ const seedFund = async () => {
   console.log('Fundraising UMKM successfully created...');
 };
 
+// Fundraising Seeds
+const fundraisingSeeds = [
+  {
+    id: 2,
+    umkm_id: 1,
+    description: 'Purchasing new equipment for handicraft production',
+    required_funds: '25000000',
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date('2024-02-01'),
+  },
+  {
+    id: 3,
+    umkm_id: 1,
+    description: 'Working capital for food processing business expansion',
+    required_funds: '75000000',
+    createdAt: new Date('2024-02-15'),
+    updatedAt: new Date('2024-02-15'),
+  },
+];
+
+// Investment Contributor Seeds
+const investmentContributorSeeds = [
+  {
+    id: 1,
+    fund_id: 1,
+    investor_id: 2,
+    amount: '5000000',
+    payment_status: 'paid',
+    createdAt: new Date('2024-02-10'),
+    updatedAt: new Date('2024-02-10'),
+  },
+];
+
+// History Funding Withdrawal Seeds
+const historyFundingWithdrawalSeeds = [
+  {
+    id: 5,
+    fund_id: 1,
+    amount: '5000000',
+    status: 'completed',
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date('2024-02-02'),
+  },
+  {
+    id: 6,
+    fund_id: 1,
+    amount: '7000000',
+    status: 'pending',
+    createdAt: new Date('2024-03-01'),
+    updatedAt: new Date('2024-03-01'),
+  },
+  {
+    id: 7,
+    fund_id: 1,
+    amount: '3000000',
+    status: 'completed',
+    createdAt: new Date('2024-02-15'),
+    updatedAt: new Date('2024-02-16'),
+  },
+];
+
+async function seedAll() {
+  try {
+    // Seed Fundraising
+    // for (const fundraising of fundraisingSeeds) {
+    //   await prisma.fundraising.create({
+    //     data: fundraising
+    //   });
+    // }
+    // console.log("Fundraising seeding completed");
+
+    // Seed Investment Contributors
+    for (const contributor of investmentContributorSeeds) {
+      await prisma.investmentContributor.create({
+        data: contributor,
+      });
+    }
+    console.log('Investment Contributors seeding completed');
+
+    // Seed History Funding Withdrawals
+    for (const withdrawal of historyFundingWithdrawalSeeds) {
+      await prisma.historyFundingWithdrawal.create({
+        data: withdrawal,
+      });
+    }
+    console.log('History Funding Withdrawals seeding completed');
+  } catch (error) {
+    console.error('Error seeding data:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+// Execute the seeding
+seedAll()
+  .then(() => console.log('All seeding completed successfully'))
+  .catch((error) => console.error('Error during seeding:', error));
+
 (async () => {
   //   for (let i = 0; i <= 5; i++) {
   //     await seedInv();

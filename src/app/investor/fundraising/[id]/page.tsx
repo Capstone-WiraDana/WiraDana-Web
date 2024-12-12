@@ -25,23 +25,121 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { usePathname } from 'next/navigation';
+import { useDetailFundraising } from '@/hooks/use-detail-fundraising';
+import { useLaporan } from '@/hooks/use-laporan';
+import { useUMKM } from '@/hooks/use-profile-umkm';
+import { useEffect, useState } from 'react';
+import validateToken from '@/hooks/tokenValidation';
 
 const formSchema = z.object({
-  price: z.number().positive('Must be a positive number'),
+  amount: z
+    .number()
+    .min(1, 'Amount harus lebih dari 0')
+    .positive('Amount harus berupa angka positif')
+    .int('Amount harus berupa bilangan bulat')
+    // Optional: to handle string inputs
+    .or(
+      z.string().regex(/^\d+$/, 'Amount harus berupa angka').transform(Number),
+    )
+    // Optional: custom refinement
+    .refine((val) => val <= 1000000000, {
+      message: 'Amount tidak boleh melebihi 1,000,000,000',
+    }),
 });
 
+const transformData = (data: any[]): Report[] => {
+  return data.map((item) => ({
+    id: item.id.toString(), // Convert number to string
+    file: item.financial_report_url,
+    tanggal: new Date(item.createdAt).toISOString().split('T')[0],
+  }));
+};
 const Fundraising = () => {
+  const [isUploading, setIsUploading] = useState(false);
+  const [investorId, setInvestorId] = useState<string | null>(null);
+  const pathname = usePathname();
+  const id = pathname?.split('/').pop();
+  const { detailfund, isLoading } = useDetailFundraising(parseInt(id ?? '0'));
+  const { laporan } = useLaporan(detailfund?.umkm_id ?? '');
+  const reportData = transformData(laporan ?? []);
+  const { umkm } = useUMKM(detailfund?.umkm_id ?? '');
+
+  const totalInvestment = detailfund?.investmentContributors.reduce(
+    (sum, investment) => sum + parseFloat(investment.amount),
+    0,
+  );
+  const totalWithdrawal = detailfund?.HistoryFundingWithdrawal.reduce(
+    (sum, withdrawal) => sum + parseFloat(withdrawal.amount),
+    0,
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: 0,
+      amount: 0,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsUploading(true);
+      console.log(id);
+      if (!values.amount) {
+        toast({
+          title: 'Error',
+          description: 'Please fill amount',
+          variant: 'destructive',
+        });
+        return;
+      }
+      const formData = new FormData();
+      if (id) {
+        formData.append('fund_id', id.toString());
+        formData.append('amount', values.amount.toString());
+        formData.append('investor_id', investorId ?? '');
+      } else {
+        throw new Error('Upload failed');
+      }
+
+      const response = await fetch('/api/umkm/add-investor', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Upload failed');
+      }
+      console.log(data);
+      toast({
+        title: 'Success',
+        description: 'Donation has been given successfully',
+      });
+
+      // Optional: Reset form
+      form.reset();
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Donation failed',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploading(false);
+    }
   }
 
+  useEffect(() => {
+    const getInvestorId = async () => {
+      const tokenData = await validateToken();
+      if (tokenData && tokenData.role === 'investor') {
+        setInvestorId(tokenData.id.toString());
+      }
+    };
+    getInvestorId();
+  }, []);
   return (
     <LayoutInv title='Detail UMKM'>
       <div className='w-full px-4 py-6'>
@@ -50,18 +148,24 @@ const Fundraising = () => {
             <Link href={'/investor/cari-umkm'}>
               <ArrowLeft size={24} />
             </Link>
-            <p className='ml-4 font-poppins text-xl'>Title</p>
+            <p className='ml-4 font-poppins text-xl'>{umkm?.umkm_name}</p>
           </div>
           <div className='mt-4 flex justify-center gap-12'>
             <div className='flex flex-col justify-center'>
               <p className='text-center font-poppins text-3xl'>
-                Rp. 300.000.000,00
+                Rp{' '}
+                {detailfund?.required_funds
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
               </p>
               <p className='text-center'>Dana Pengajuan</p>
             </div>
             <div className='flex flex-col justify-center'>
               <p className='text-center font-poppins text-3xl'>
-                Rp. 300.000.000,00
+                Rp{' '}
+                {totalInvestment
+                  ?.toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
               </p>
               <p className='text-center'>Dana Sekarang</p>
             </div>
@@ -74,7 +178,7 @@ const Fundraising = () => {
               <p>Deskripsi</p>
             </div>
             <p className='ml-12 text-justify text-body-1'>
-              oaksopdjashapsdjapsjdpajspskadbkasd
+              {detailfund?.description}
             </p>
           </div>
           <div className='mt-4'>
@@ -85,7 +189,7 @@ const Fundraising = () => {
               <p>Laporan Keuangan</p>
             </div>
             <div className='ml-12 mt-2'>
-              <DataTable columns={columns} data={[]} />
+              <DataTable columns={columns} data={reportData ?? []} />
             </div>
           </div>
         </div>
@@ -99,12 +203,21 @@ const Fundraising = () => {
               >
                 <FormField
                   control={form.control}
-                  name='price'
+                  name='amount'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nominal</FormLabel>
                       <FormControl>
-                        <Input placeholder='shadcn' {...field} />
+                        <Input
+                          {...field}
+                          type='text' // Change to text
+                          placeholder='Enter amount'
+                          onChange={(e) => {
+                            field.onChange(
+                              e.target.value === '' ? '' : e.target.value,
+                            );
+                          }}
+                        />
                       </FormControl>
                       <FormDescription>
                         Masukan dana yang ingin kamu berikan.
@@ -113,7 +226,11 @@ const Fundraising = () => {
                     </FormItem>
                   )}
                 />
-                <Button type='submit' className='bg-blue-500 hover:bg-blue-300'>
+                <Button
+                  type='submit'
+                  disabled={isUploading}
+                  className='bg-blue-500 hover:bg-blue-300'
+                >
                   Submit
                 </Button>
               </form>

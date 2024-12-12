@@ -9,10 +9,7 @@ import { File } from 'lucide-react';
 // You can use a Zod schema here if you want.
 export type Report = {
   id: string;
-  file: {
-    nama: string;
-    url: string;
-  };
+  file: string;
   tanggal: string;
 };
 
@@ -23,10 +20,10 @@ export const columns: ColumnDef<Report>[] = [
     cell: ({ row }) => {
       const file = row.original.file;
       return (
-        <Link href={file.url} className={badgeVariants({ variant: 'outline' })}>
+        <Link href={file} className={badgeVariants({ variant: 'outline' })}>
           <div className='flex items-center gap-2 p-2'>
             <File size={16} />
-            <p className='font-poppins font-thin'>{file.nama}</p>
+            <p className='font-poppins font-thin'>Report</p>
           </div>
         </Link>
       );
