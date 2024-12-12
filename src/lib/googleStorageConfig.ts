@@ -10,7 +10,7 @@ export const storage = new Storage({
   projectId: String(process.env.PROJECT_ID),
 });
 
-const bucketName = process.env.GCP_BUCKET_NAME || "wiradana-bucket";
+const bucketName = process.env.GCP_BUCKET_NAME || 'wiradana-bucket';
 const bucket = storage.bucket(bucketName!);
 
 export const uploadToGCS = async (file: File): Promise<string> => {
