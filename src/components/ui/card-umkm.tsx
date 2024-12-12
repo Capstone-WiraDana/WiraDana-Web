@@ -46,7 +46,7 @@ const CardUmkm = ({
                 src='/img/icons/category.png'
                 alt='img_icons'
               />
-              <p className='ms-2 text-sm font-medium'>
+              <p className='ms-2 max-w-full truncate text-sm font-medium'>
                 {convertAbbreviation(umkm_type)}
               </p>
             </label>
@@ -56,7 +56,9 @@ const CardUmkm = ({
                 src='/img/icons/location-2.png'
                 alt='img_icons'
               />
-              <p className='ms-2 text-sm font-medium'>{umkm_place}</p>
+              <p className='ms-2 text-sm font-medium'>
+                {umkm_place}
+              </p>
             </label>
             <label className='inline-flex items-center' htmlFor=''>
               <img className='w-5' src='/img/icons/year.png' alt='img_icons' />
