@@ -11,9 +11,7 @@ const Masuk = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  useEffect(() => {
-    document.title = 'WiraDana | Masuk';
-  });
+  useEffect(() => {});
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -69,7 +67,7 @@ const Masuk = () => {
   return (
     <>
       <Head>
-        <title>{document.title}</title>
+        <title>WiraDana | Masuk</title>
       </Head>
       <div className='flex h-screen w-full items-center justify-center bg-emerald px-52'>
         <div className='w-full rounded-[10px] bg-seasalt px-10 py-5'>

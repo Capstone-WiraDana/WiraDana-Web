@@ -12,8 +12,6 @@ const LayoutInv = ({
   const router = useRouter();
 
   useEffect(() => {
-    document.title = `WiraDana | ${title}`;
-
     const checkToken = async () => {
       const tokenData = await validateToken();
       if (tokenData) {
@@ -34,7 +32,7 @@ const LayoutInv = ({
   return (
     <>
       <Head>
-        <title>{document.title}</title>
+        <title>WiraDana | ${title}</title>
       </Head>
       <div className='mb-20'>
         <NavbarInv />

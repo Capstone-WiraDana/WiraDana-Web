@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prettier --check . && next build",
+    "build": "prettier --check . && npx prisma generate && next build",
     "format": "prettier --write .",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
     "migrate": "npx prisma migrate dev --name init",
-    "db-format": "npx prisma format"
+    "db-format": "npx prisma format",
+    "db-seed": "npx prisma db seed"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.14.0",
@@ -42,6 +43,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -58,6 +61,10 @@
     "prettier": "^3.4.1",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

@@ -10,7 +10,7 @@ import CardUmkm from '@/components/ui/card-umkm';
 import { useState } from 'react';
 
 const CariUmkm = () => {
-  const [setSearch] = useState('');
+  const [search, setSearch] = useState('');
 
   return (
     <>

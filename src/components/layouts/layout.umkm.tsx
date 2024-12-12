@@ -12,8 +12,6 @@ const LayoutUmkm = ({
   const router = useRouter();
 
   useEffect(() => {
-    document.title = `WiraDana | ${title}`;
-
     const checkToken = async () => {
       const tokenData = await validateToken();
       if (tokenData) {
