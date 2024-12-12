@@ -30,7 +30,7 @@ const sidebar = [
     name: 'Ajukan Dana',
   },
   {
-    url: '/posts',
+    url: '/umkm/posts',
     icon: Aperture,
     name: 'Posting Kegiatan',
   },
