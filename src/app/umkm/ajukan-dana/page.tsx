@@ -34,18 +34,31 @@ const formSchema = z.object({
         message: 'File harus berformat gambar (JPEG, PNG, atau WEBP)',
       },
     ),
-  caption: z.string().min(1, { message: 'Caption tidak boleh kosong' }),
+  description: z.string().min(1, { message: 'Deskripsi tidak boleh kosong' }),
+  amount: z
+    .number()
+    .min(1, 'Amount harus lebih dari 0')
+    .positive('Amount harus berupa angka positif')
+    .int('Amount harus berupa bilangan bulat')
+    // Optional: to handle string inputs
+    .or(
+      z.string().regex(/^\d+$/, 'Amount harus berupa angka').transform(Number),
+    )
+    // Optional: custom refinement
+    .refine((val) => val <= 1000000000, {
+      message: 'Amount tidak boleh melebihi 1,000,000,000',
+    }),
 });
 
 const Post = () => {
-  const { news, error, isLoading } = useUMKMNews();
   const { umkm } = useUMKM();
   const [isUploading, setIsUploading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       file: undefined,
-      caption: '',
+      description: '',
+      amount: 0,
     },
   });
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,12 +86,13 @@ const Post = () => {
       if (id) {
         formData.append('id', id.toString()); //
         formData.append('file', values.file);
-        formData.append('caption', values.caption);
+        formData.append('amount', values.amount.toString());
+        formData.append('desc', values.description);
       } else {
         throw new Error('Upload failed');
       }
 
-      const response = await fetch('/api/umkm/tambah-post', {
+      const response = await fetch('/api/umkm/add-fundraising', {
         method: 'POST',
         body: formData,
       });
@@ -112,38 +126,16 @@ const Post = () => {
     <LayoutUmkm title='Post UMKM'>
       <div className='w-full px-6 py-6'>
         <div className='flex h-fit w-full flex-col items-start justify-center rounded-md border-l-8 border-l-blue-500 bg-white px-8 pb-6 pt-6'>
-          <p className='font-poppins text-lg font-medium'>Daftar Kegiatan</p>
+          <p className='font-poppins text-lg font-medium'>Ajukan Dana</p>
           <p className='font-poppins text-sm text-blackolive'>
-            Tambahkan dokumentasi kegiatan kamu untuk meningkatkan kepercayaan
-            investor.
+            Ajukan dana untuk membantu bisnismu.
           </p>
         </div>
         <div className='mt-4 h-fit w-full rounded-md bg-white px-8 pb-6 pt-6'>
           <div>
-            <p className='font-poppins text-lg font-medium'>Koleksi Kegiatan</p>
+            <p className='font-poppins text-lg font-medium'>Data Pengajuan</p>
             <p className='font-poppins text-sm text-blackolive'>
-              Dokumentasi kegiatan kamu selama ini.
-            </p>
-          </div>
-          <div className='mt-4 grid grid-cols-3 items-center gap-1'>
-            {news?.map((item, index) => (
-              <div key={index} className='aspect-square'>
-                <img
-                  className='h-full w-full object-cover'
-                  src={item.photo_url}
-                  alt='img_content'
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className='mt-4 h-fit w-full rounded-md bg-white px-8 pb-6 pt-6'>
-          <div>
-            <p className='font-poppins text-lg font-medium'>
-              Tambahkan Kegiatan
-            </p>
-            <p className='font-poppins text-sm text-blackolive'>
-              Tambahkan kegiatan kamu selama ini.
+              Silahlan cek kembali data pengajuan kamu.
             </p>
           </div>
           <div>
@@ -159,10 +151,10 @@ const Post = () => {
                   name='file'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Laporan</FormLabel>
+                      <FormLabel>Cover</FormLabel>
                       <FormControl>
                         <Input
-                          id='laporan'
+                          id='cover'
                           type='file'
                           onChange={handleFileChange}
                         />
@@ -174,17 +166,32 @@ const Post = () => {
 
                 <FormField
                   control={form.control}
-                  name='caption'
+                  name='description'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Caption</FormLabel>
+                      <FormLabel>Deskripsi</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder='Masukan Caption' />
+                        <Input {...field} placeholder='Masukan Deskripsi' />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name='amount'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Jumlah Dana</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder='Masukan Dana' />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <Button
                   type='submit'
                   disabled={isUploading}
