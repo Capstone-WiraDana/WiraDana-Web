@@ -1,5 +1,5 @@
 'use server';
-import storage from './googleStorageConfig';
+import { storage } from './googleStorageConfig';
 import 'dotenv/config';
 
 const bucketName = String(process.env.GCP_BUCKET_NAME) || 'wiradana-bucket';
