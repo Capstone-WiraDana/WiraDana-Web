@@ -26,7 +26,7 @@ const sidebar = [
     name: 'Rekap Pengajuan',
   },
   {
-    url: '/ajukan-dana',
+    url: '/umkm/ajukan-dana',
     icon: HandCoins,
     name: 'Ajukan Dana',
   },
