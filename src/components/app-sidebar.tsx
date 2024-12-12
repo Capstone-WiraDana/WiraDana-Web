@@ -17,7 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
+import { useRouter } from 'next/navigation';
+import { useUMKM } from '@/hooks/use-profile-umkm';
 const sidebar = [
   {
     url: '/umkm',
@@ -25,18 +26,25 @@ const sidebar = [
     name: 'Rekap Pengajuan',
   },
   {
-    url: '/ajukan-dana',
+    url: '/umkm/ajukan-dana',
     icon: HandCoins,
     name: 'Ajukan Dana',
   },
   {
-    url: '/posts',
+    url: '/umkm/posts',
     icon: Aperture,
     name: 'Posting Kegiatan',
   },
 ];
 
 export function AppSidebar() {
+  const { umkm, error, isLoading } = useUMKM();
+  console.log(umkm);
+  const router = useRouter();
+  const logoutHandler = async () => {
+    window.localStorage.removeItem('token');
+    router.push('/');
+  };
   return (
     <Sidebar>
       <SidebarHeader className='px-4 py-3 text-h6'>WiraDana</SidebarHeader>
@@ -64,7 +72,7 @@ export function AppSidebar() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <User2 /> Username
+                  <User2 /> {umkm?.umkm_name}
                   <ChevronUp className='ml-auto' />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -73,10 +81,10 @@ export function AppSidebar() {
                 className='w-[--radix-popper-anchor-width]'
               >
                 <DropdownMenuItem>
-                  <span>Account</span>
+                  <span>Akun</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem onClick={logoutHandler}>
+                  <span>Keluar</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
