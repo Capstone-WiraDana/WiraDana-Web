@@ -8,7 +8,7 @@ const Dashboard = () => {
   console.log(fundraisings);
   return (
     <LayoutUmkm title='Dashboard UMKM'>
-      <div className='mx-4 mt-4 grid grid-cols-3 items-center gap-3'>
+      <div className='mx-4 mb-6 mt-2 grid grid-cols-3 items-center gap-3'>
         {fundraisings?.map((item, index) => (
           <Link
             href={'/umkm/detail-umkm/' + item.id}
