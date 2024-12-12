@@ -1,6 +1,6 @@
 'use client';
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import NavbarInv from '../navbar.inv';
 import validateToken from '@/hooks/tokenValidation';
 import { useRouter } from 'next/navigation';
@@ -10,12 +10,14 @@ const LayoutInv = ({
   title,
 }: Readonly<{ children: React.ReactNode; title: string }>) => {
   const router = useRouter();
+  const [id, setId] = useState<number>();
 
   useEffect(() => {
     const checkToken = async () => {
       const tokenData = await validateToken();
       if (tokenData) {
-        const { role } = tokenData;
+        const { id, role } = tokenData;
+        setId(id);
         if (role != 'investor' && role == 'umkm') {
           router.push('/umkm');
         } else if (role != 'investor' && role != 'umkm') {
@@ -35,7 +37,7 @@ const LayoutInv = ({
         <title>WiraDana | ${title}</title>
       </Head>
       <div className='mb-20'>
-        <NavbarInv />
+        <NavbarInv id={Number(id)} />
       </div>
       {children}
     </>

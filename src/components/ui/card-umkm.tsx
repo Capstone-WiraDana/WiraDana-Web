@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import convertAbbreviation from '@/hooks/use-convertAbr';
 
 const CardUmkm = ({
   id,
@@ -15,21 +16,19 @@ const CardUmkm = ({
   umkm_place: string;
   umkm_year: number;
 }>) => {
-  const calculateUmkmAge = async (year: number): Promise<string> => {
+  const calculateUmkmAge = (year: number): string => {
     const currentYear = new Date().getFullYear();
     const age = currentYear - year;
 
-    let status: string;
     if (age <= 2) {
-      status = '0–2 Tahun';
+      return '0–2 Tahun';
     } else if (age >= 3 && age <= 5) {
-      status = '3–5 Tahun';
+      return '3–5 Tahun';
     } else {
-      status = '>5 Tahun';
+      return '>5 Tahun';
     }
-
-    return status;
   };
+
   return (
     <>
       <div className='w-[21.5rem] rounded-lg bg-white p-5 shadow-card'>
@@ -47,7 +46,9 @@ const CardUmkm = ({
                 src='/img/icons/category.png'
                 alt='img_icons'
               />
-              <p className='ms-2 text-sm font-medium'>{umkm_type}</p>
+              <p className='ms-2 text-sm font-medium'>
+                {convertAbbreviation(umkm_type)}
+              </p>
             </label>
             <label className='inline-flex items-center' htmlFor=''>
               <img
