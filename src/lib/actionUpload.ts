@@ -4,12 +4,15 @@ import 'dotenv/config';
 
 const bucketName = String(process.env.GCP_BUCKET_NAME) || 'wiradana-bucket';
 
-export const uploadPhoto = async (form: FormData, newFileName: string): Promise<boolean> => {
+export const uploadPhoto = async (
+  form: FormData,
+  newFileName: string,
+): Promise<boolean> => {
   try {
     const file = form.get('file') as File;
     if (!file) throw new Error('No file provided...');
     if (file.size < 1) throw new Error('File is empty...');
-    
+
     const buffer = await file.arrayBuffer();
     const folderPath = 'uploads/users/';
     const filePath = `${folderPath}${newFileName}`;

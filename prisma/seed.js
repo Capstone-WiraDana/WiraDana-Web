@@ -243,5 +243,5 @@ const seedInvestmentContributors = async () => {
   for (let i = 0; i <= 10; i++) {
     await seedFund();
   }
-  await seedInvestmentContributors()
+  await seedInvestmentContributors();
 })();

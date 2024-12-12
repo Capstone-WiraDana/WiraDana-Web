@@ -127,7 +127,7 @@ const ProfilUmkm = () => {
           </>
         ) : (
           <>
-            <Skeleton  className='w-full h-screen'/>
+            <Skeleton className='h-screen w-full' />
           </>
         )}
         <div className='mt-10'>
