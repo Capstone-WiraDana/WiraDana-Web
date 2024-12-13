@@ -81,7 +81,7 @@ const Detail = () => {
                 <div className='flex items-center gap-3 px-5 py-4'>
                   <img
                     className='h-12 w-12 rounded-[360px] border border-blackolive object-cover'
-                    src={story.photo_url}
+                    src={story.logo_url}
                     alt='img_logo'
                   />
                   <Link href={`/investor/profil-umkm/${story.umkm_id}`}>

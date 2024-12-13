@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
-    "migrate": "npx prisma migrate dev --name init && npm run db-seed",
+    "migrate": "npx prisma migrate dev --name init",
     "db-format": "npx prisma format",
     "db-seed": "npx prisma db seed"
   },
