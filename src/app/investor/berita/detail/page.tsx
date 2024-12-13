@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import validateToken from '@/hooks/tokenValidation';
 import { toast } from '@/hooks/use-toast';
 import { Suspense } from 'react';
+import formatSentimentLabel from '@/hooks/use-formatSentiment';
 
 const Detail = () => {
   const router = useRouter();
@@ -18,6 +19,10 @@ const Detail = () => {
   const [dataComment, setDataComment] = useState<any[]>([]);
   const [story, setStory] = useState<any>();
 
+  const [positiveCount, setPositiveCount] = useState(0);
+  const [neutralCount, setNeutralCount] = useState(0);
+  const [negativeCount, setNegativeCount] = useState(0);
+
   const fetchData = async () => {
     const fetchContent = await fetch(`/api/news/details?id=${id}`, {
       method: 'GET',
@@ -26,8 +31,69 @@ const Detail = () => {
     if (fetchContent) {
       const dataContent = await fetchContent.json();
       const data = dataContent.data;
+
+      const comments = data.comment.map((comment: any) => comment.comment);
+
+      const commentsWithSentiment = await analyzeSentimentForComments(comments);
+
+      const updatedComments = data.comment.map(
+        (comment: any, index: number) => ({
+          ...comment,
+          label: commentsWithSentiment[index].label,
+        }),
+      );
+
       setStory(data.story[0]);
-      setDataComment(data.comment);
+      setDataComment(updatedComments);
+      calculateSentimentCounts(updatedComments);
+    }
+  };
+
+  const calculateSentimentCounts = (comments: any[]) => {
+    let positive = 0;
+    let neutral = 0;
+    let negative = 0;
+
+    comments.forEach((comment) => {
+      if (comment.label === 1) {
+        positive++;
+      } else if (comment.label === 0) {
+        neutral++;
+      } else if (comment.label === -1) {
+        negative++;
+      }
+    });
+
+    setPositiveCount(positive);
+    setNeutralCount(neutral);
+    setNegativeCount(negative);
+  };
+
+  const analyzeSentimentForComments = async (comments: string[]) => {
+    try {
+      const response = await fetch('/api/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          texts: comments,
+        }),
+      });
+
+      const data = await response.json();
+      const predictions = data.predictions;
+
+      return comments.map((comment, index) => ({
+        comment,
+        label: predictions[index],
+      }));
+    } catch (error) {
+      console.error('Error analyzing sentiment:', error);
+      return comments.map((comment) => ({
+        comment,
+        label: 0,
+      }));
     }
   };
 
@@ -145,19 +211,19 @@ const Detail = () => {
                       <p className='text-lg font-semibold text-erie'>
                         {data.username}
                       </p>
-                      <button className='ml-auto mr-5 rounded bg-emerald px-8 py-1 font-semibold text-seasalt'>
-                        Status
+                      <button
+                        className={`ml-auto mr-5 rounded ${data.label === 1 ? 'bg-emerald' : data.label === 0 ? 'bg-bluesky' : 'bg-red-500'} px-8 py-1 font-semibold text-seasalt`}
+                      >
+                        {formatSentimentLabel(data.label)}
                       </button>
                     </div>
                     <p className='mt-1'>{data.comment}</p>
                   </div>
                 ))
               ) : (
-                <>
-                  <p className='text-center text-3xl font-bold text-red-500'>
-                    Belum Ada Komentar
-                  </p>
-                </>
+                <p className='text-center text-3xl font-bold text-red-500'>
+                  Belum Ada Komentar
+                </p>
               )}
             </div>
           </div>
@@ -166,19 +232,25 @@ const Detail = () => {
               <p className='text-2xl font-bold text-seasalt'>
                 Jumlah Komentar Positif
               </p>
-              <p className='text-2xl font-semibold text-seasalt'>50 Komentar</p>
+              <p className='text-2xl font-semibold text-seasalt'>
+                {positiveCount} Komentar
+              </p>
             </div>
             <div className='w-full rounded bg-bluesky p-5 shadow-card'>
               <p className='text-2xl font-bold text-seasalt'>
                 Jumlah Komentar Netral
               </p>
-              <p className='text-2xl font-semibold text-seasalt'>50 Komentar</p>
+              <p className='text-2xl font-semibold text-seasalt'>
+                {neutralCount} Komentar
+              </p>
             </div>
             <div className='w-full rounded bg-red-500 p-5 shadow-card'>
               <p className='text-2xl font-bold text-seasalt'>
                 Jumlah Komentar Negatif
               </p>
-              <p className='text-2xl font-semibold text-seasalt'>50 Komentar</p>
+              <p className='text-2xl font-semibold text-seasalt'>
+                {negativeCount} Komentar
+              </p>
             </div>
           </div>
         </div>
